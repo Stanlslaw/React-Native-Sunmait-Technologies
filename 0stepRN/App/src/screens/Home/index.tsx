@@ -51,7 +51,7 @@ const userSchema = Yup.object().shape({
     .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .required('Password is required'),
   policy: Yup.boolean()
-    .isFalse('You have to accept policy')
+    .isTrue('You have to accept policy')
     .required('You have to accept policy'),
 });
 function HomeScreen(): React.JSX.Element {
@@ -66,10 +66,10 @@ function HomeScreen(): React.JSX.Element {
     password: null,
     policy: false,
   });
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
-  const [policy, setPolicy] = useState(false);
+  const [email, setEmail] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [policy, setPolicy] = useState<boolean | null>(null);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const emailRef = useRef<TextInput>(null);
@@ -109,9 +109,16 @@ function HomeScreen(): React.JSX.Element {
     nextRef.current?.focus();
   };
 
-  const handlePolicyState = () => {
-    setPolicy(!policy);
+  useEffect(() => {
     handleValidation();
+  }, [policy, email, phoneNumber, password]);
+  const handlePolicyState = () => {
+    console.log(policy);
+    if (policy === null) {
+      setPolicy(true);
+      return;
+    }
+    setPolicy(!policy);
   };
   const handleValidation = () => {
     console.log(formErrors);
@@ -186,7 +193,7 @@ function HomeScreen(): React.JSX.Element {
               handleFocus(phoneNumberRef);
             }}
           />
-          {formErrors && formErrors.email ? (
+          {email !== null && formErrors && formErrors.email ? (
             <Text style={{color: 'red'}}>{formErrors.email}</Text>
           ) : (
             <></>
@@ -204,7 +211,7 @@ function HomeScreen(): React.JSX.Element {
               handleFocus(passwordRef);
             }}
           />
-          {formErrors && formErrors.phone ? (
+          {phoneNumber !== null && formErrors && formErrors.phone ? (
             <Text style={{color: 'red'}}>{formErrors.phone}</Text>
           ) : (
             <></>
@@ -246,14 +253,14 @@ function HomeScreen(): React.JSX.Element {
               </TouchableOpacity>
             }
           </View>
-          {formErrors && formErrors.password ? (
+          {password !== null && formErrors && formErrors.password ? (
             <Text style={{color: 'red'}}>{formErrors.password}</Text>
           ) : (
             <></>
           )}
           <Checkbox
             onPress={handlePolicyState}
-            isChecked={policy}
+            isChecked={policy === null || !policy ? false : true}
             title={
               <Text>
                 “I accept the{' '}
@@ -264,16 +271,23 @@ function HomeScreen(): React.JSX.Element {
               </Text>
             }
           />
-          {formErrors && formErrors.policy ? (
+          {policy !== null && formErrors && formErrors.policy ? (
             <Text style={{color: 'red'}}>{formErrors.policy}</Text>
           ) : (
             <></>
           )}
-          <Button
-            disabled={formErrors ? true : false}
-            onPress={handleFormEnding}
-            title={'Next'}
-          />
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end',
+              paddingTop: 24,
+            }}>
+            <Button
+              disabled={formErrors ? true : false}
+              onPress={handleFormEnding}
+              title={'Next'}
+            />
+          </View>
         </View>
       </ScrollView>
       <BottomSheet
@@ -281,7 +295,7 @@ function HomeScreen(): React.JSX.Element {
         enablePanDownToClose={true}
         snapPoints={snapPoints}
         index={-1}
-        backgroundStyle={{backgroundColor: '#d7d7d7'}}>
+        backgroundStyle={{backgroundColor: '#efefef'}}>
         <View
           style={{
             flex: 1,
@@ -300,10 +314,10 @@ function HomeScreen(): React.JSX.Element {
               <View style={{aspectRatio: 1}}>
                 <Image style={styles.image} source={cameraImage} />
               </View>
-              <Text style={{textAlign: 'center'}}>Camera</Text>
+              <Text style={{textAlign: 'center', color: 'black'}}>Camera</Text>
             </TouchableOpacity>
           </View>
-          j
+
           <View>
             <TouchableOpacity
               style={{
@@ -316,7 +330,7 @@ function HomeScreen(): React.JSX.Element {
               <View style={{aspectRatio: 1}}>
                 <Image style={styles.image} source={galleryImage} />
               </View>
-              <Text style={{textAlign: 'center'}}>Gallery</Text>
+              <Text style={{textAlign: 'center', color: 'black'}}>Gallery</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -349,7 +363,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderBottomWidth: 1,
-    borderBottomColor: 'blue',
+    borderBottomColor: '#e7e7e8',
     fontSize: 16,
     color: 'black',
   },

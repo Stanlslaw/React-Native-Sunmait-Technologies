@@ -30,7 +30,6 @@ export type CheckBoxProps = {
   isChecked: boolean;
   title: React.JSX.Element;
   onPress: any;
-  ref: React.RefObject<any>;
 };
 
 const styles = StyleSheet.create({
