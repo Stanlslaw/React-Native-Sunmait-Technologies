@@ -20,11 +20,13 @@ import {
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import * as Yup from 'yup';
 
-import BottomSheet from '@gorhom/bottom-sheet';
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 import cameraImage from '../../../../../2stepRN/Nav/src/assets/images/camera.png';
 import galleryImage from '../../../../../2stepRN/Nav/src/assets/images/gallery.png';
 import userImage from '../../../../../2stepRN/Nav/src/assets/images/user.png';
+import {RootStackParamList} from '../../../App.tsx';
 import Checkbox from '../../components/Checkbox';
 
 interface UserValuesErrors {
@@ -54,10 +56,17 @@ const userSchema = Yup.object().shape({
     .isTrue('You have to accept policy')
     .required('You have to accept policy'),
 });
-function HomeScreen(): React.JSX.Element {
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
+
+export default function RegisterScreen({
+  navigation,
+  route,
+}: Props): React.JSX.Element {
   const windowWidth: number = useWindowDimensions().width;
   const windowHeigth: number = useWindowDimensions().height;
   const snapPoints = useMemo(() => ['25%'], []);
+  const snapPointsPolicy = useMemo(() => ['50%'], []);
 
   const [imageUri, setImageUri] = useState(null);
   const [formErrors, setFormErrors] = useState<UserValuesErrors | null>({
@@ -71,6 +80,7 @@ function HomeScreen(): React.JSX.Element {
   const [password, setPassword] = useState(null);
   const [policy, setPolicy] = useState<boolean | null>(null);
 
+  const policyModalRef = useRef<BottomSheet>(null);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const emailRef = useRef<TextInput>(null);
   const phoneNumberRef = useRef<TextInput>(null);
@@ -79,7 +89,10 @@ function HomeScreen(): React.JSX.Element {
 
   const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
   const openBottomModal = () => {
-    bottomSheetRef?.current.snapToIndex(0);
+    bottomSheetRef.current?.snapToIndex(0);
+  };
+  const openPolicyModal = () => {
+    policyModalRef.current?.snapToIndex(0);
   };
   const handleGallery = async () => {
     await launchImageLibrary({mediaType: 'photo'}, response => {
@@ -147,7 +160,7 @@ function HomeScreen(): React.JSX.Element {
         {
           text: 'Yes',
           onPress: () => {
-            console.log('Ok pressed');
+            route.params.handleSignedIn();
           },
         },
         {
@@ -166,7 +179,6 @@ function HomeScreen(): React.JSX.Element {
   };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <StatusBar backgroundColor="white" hidden={true} />
       <ScrollView style={styles.container}>
         <TouchableOpacity
           style={StyleSheet.compose(styles.imageContaner, {
@@ -183,6 +195,7 @@ function HomeScreen(): React.JSX.Element {
           <Text style={styles.label}>Email:</Text>
           <TextInput
             style={styles.textInput}
+            maxLength={64}
             placeholder="examle@smth.com"
             ref={emailRef}
             inputMode={'email'}
@@ -202,6 +215,7 @@ function HomeScreen(): React.JSX.Element {
           <TextInput
             style={styles.textInput}
             placeholder="+375291112233"
+            maxLength={13}
             ref={phoneNumberRef}
             inputMode={'tel'}
             keyboardType={'number-pad'}
@@ -222,6 +236,7 @@ function HomeScreen(): React.JSX.Element {
               style={styles.textInput}
               secureTextEntry={!isPasswordShown}
               placeholder="Password"
+              maxLength={32}
               ref={passwordRef}
               inputMode={'text'}
               keyboardType={'default'}
@@ -264,7 +279,9 @@ function HomeScreen(): React.JSX.Element {
             title={
               <Text>
                 “I accept the{' '}
-                <Text style={{textDecorationLine: 'underline'}}>
+                <Text
+                  style={{textDecorationLine: 'underline'}}
+                  onPress={openPolicyModal}>
                   Privacy policy
                 </Text>
                 ”.
@@ -290,6 +307,36 @@ function HomeScreen(): React.JSX.Element {
           </View>
         </View>
       </ScrollView>
+      <BottomSheet
+        ref={policyModalRef}
+        enablePanDownToClose={true}
+        snapPoints={snapPointsPolicy}
+        index={-1}
+        backgroundStyle={{backgroundColor: '#eaeaea'}}>
+        <BottomSheetScrollView
+          style={{flex: 1, paddingLeft: 24, paddingRight: 24, paddingTop: 24}}>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc rutrum
+            felis at laoreet gravida. Aliquam ac feugiat turpis, ut varius orci.
+            Suspendisse feugiat felis arcu, a posuere massa ultrices et.
+            Maecenas purus neque, fermentum eget pellentesque eget, malesuada et
+            mauris. Quisque auctor, metus sit amet ullamcorper auctor, mauris
+            nulla auctor tellus, ut maximus metus orci et augue. Vivamus mattis
+            mauris ac lacinia auctor. Morbi facilisis pellentesque viverra. Sed
+            eget sapien et arcu volutpat mollis. Mauris commodo porttitor
+            pulvinar. Donec eget tempus mi. Suspendisse non eleifend dui, eu
+            malesuada turpis. Nam ante magna, pharetra et sem quis, consectetur
+            imperdiet risus. Nulla et nibh eget mauris tristique tempus sed id
+            massa. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Maecenas tortor neque, blandit eget tempus ut, rutrum sed dui.
+            Maecenas ut accumsan mauris. Aenean in accumsan orci. Vestibulum
+            posuere orci ligula, id elementum felis convallis vel. Curabitur vel
+            tortor eget sem varius dictum. Curabitur consequat efficitur metus,
+            nec mollis elit congue eu. Donec in malesuada sem. Vivamus laoreet
+            tincidunt iaculis.
+          </Text>
+        </BottomSheetScrollView>
+      </BottomSheet>
       <BottomSheet
         ref={bottomSheetRef}
         enablePanDownToClose={true}
@@ -368,5 +415,3 @@ const styles = StyleSheet.create({
     color: 'black',
   },
 });
-
-export default HomeScreen;
