@@ -6,11 +6,9 @@ import RootNavigation from './src/navigation/RootNavigation.jsx';
 import {store} from './src/store/store.js';
 function App(): React.JSX.Element {
   return (
-    <GestureHandlerRootView>
-      <Provider store={store}>
-        <RootNavigation />
-      </Provider>
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <RootNavigation />
+    </Provider>
   );
 }
 export default App;
