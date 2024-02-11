@@ -1,9 +1,18 @@
 import React from 'react';
-import {Alert, Button, StyleSheet, Text, View} from 'react-native';
+import {
+  Alert,
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useDispatch} from 'react-redux';
 
+import ImagePicker from '../../components/ImagePicker';
+import ProfileNavButton from '../../components/ProfileNavButton';
 import {changeUserAuthStatus} from '../../features/auth/authSlice';
-import {styles} from './styles';
+import styles from './styles';
 export default function ProfileScreen({navigation}) {
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -22,19 +31,37 @@ export default function ProfileScreen({navigation}) {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <Button
-          title={'Settings'}
-          onPress={() => navigation.navigate('settings')}
-        />
-        <Button
-          title={'Acconunt Details'}
-          onPress={() => navigation.navigate('account-details')}
-        />
-        <Button
-          title={'Favorites'}
-          onPress={() => navigation.navigate('favorites')}
-        />
-        <Button title={'Logout'} onPress={handleLogout} />
+        <View>
+          <ImagePicker />
+          <Text style={styles.userName}>Jonh Smith</Text>
+        </View>
+        <View style={styles.navigationContainer}>
+          <ProfileNavButton
+            iconColor={'red'}
+            iconName={'heart'}
+            title={'Favorites'}
+            onPress={() => navigation.navigate('favorites')}
+          />
+          <ProfileNavButton
+            iconColor={'blue'}
+            iconName={'person-circle-outline'}
+            title={'Account Details'}
+            onPress={() => navigation.navigate('account-details')}
+          />
+          <ProfileNavButton
+            iconColor={'grey'}
+            iconName={'settings-outline'}
+            title={'Settings'}
+            onPress={() => {
+              navigation.navigate('settings');
+            }}
+          />
+        </View>
+        <TouchableOpacity
+          style={styles.logoutButtonContainer}
+          onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

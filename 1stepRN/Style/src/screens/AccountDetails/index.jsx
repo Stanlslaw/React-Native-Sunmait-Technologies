@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-import {styles} from './styles';
+import styles from './styles';
 
 export default function AccountDetailsScreen({navigation}) {
   useEffect(() => {
@@ -10,7 +10,9 @@ export default function AccountDetailsScreen({navigation}) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPressOut={handleDoneButton}>
-          <Text>Done</Text>
+          <Text style={{color: 'blue', fontSize: 16, fontWeight: 400}}>
+            Done
+          </Text>
         </TouchableOpacity>
       ),
     });

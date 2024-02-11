@@ -23,7 +23,7 @@ export default function ProficleNavigation({navigation, route}) {
     <Stack.Navigator initialRouteName={'profile'}>
       <Stack.Screen
         name={'profile'}
-        options={{title: 'Profile'}}
+        options={{title: 'My Profile'}}
         component={ProfileScreen}
       />
       <Stack.Screen
@@ -41,7 +41,7 @@ export default function ProficleNavigation({navigation, route}) {
           title: 'Edit profile',
           headerRight: () => (
             <TouchableOpacity>
-              <Text>Done</Text>
+              <Text style={{color: 'blue', fontSize: 16}}>Done</Text>
             </TouchableOpacity>
           ),
         }}

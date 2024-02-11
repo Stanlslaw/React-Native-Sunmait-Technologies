@@ -23,9 +23,9 @@ import * as Yup from 'yup';
 import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
+import userImage from '../../../../../1stepRN/Style/src/assets/images/user.png';
 import cameraImage from '../../../../../2stepRN/Nav/src/assets/images/camera.png';
 import galleryImage from '../../../../../2stepRN/Nav/src/assets/images/gallery.png';
-import userImage from '../../../../../2stepRN/Nav/src/assets/images/user.png';
 import {RootStackParamList} from '../../../App.tsx';
 import Checkbox from '../../components/Checkbox';
 
