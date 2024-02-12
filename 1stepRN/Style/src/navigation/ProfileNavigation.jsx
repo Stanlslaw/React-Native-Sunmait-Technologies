@@ -50,6 +50,7 @@ export default function ProficleNavigation({navigation, route}) {
       <Stack.Screen
         name={'settings'}
         options={{
+          title: 'Settings',
           headerTitleAlign: 'center',
         }}
         component={SettingsScreen}

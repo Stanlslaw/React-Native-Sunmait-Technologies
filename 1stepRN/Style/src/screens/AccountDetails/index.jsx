@@ -1,6 +1,13 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
+import PropertyEditor from '../../components/PropertyEditor';
 import styles from './styles';
 
 export default function AccountDetailsScreen({navigation}) {
@@ -10,7 +17,7 @@ export default function AccountDetailsScreen({navigation}) {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity onPressOut={handleDoneButton}>
-          <Text style={{color: 'blue', fontSize: 16, fontWeight: 400}}>
+          <Text style={{color: 'blue', fontSize: 18, fontWeight: 400}}>
             Done
           </Text>
         </TouchableOpacity>
@@ -22,8 +29,29 @@ export default function AccountDetailsScreen({navigation}) {
   };
   return (
     <View style={styles.container}>
-      <View style={StyleSheet.compose(styles.content, styles.center)}>
-        <Text>Account Details</Text>
+      <View style={styles.content}>
+        <PropertyEditor>
+          <PropertyEditor.Group title={'PUBLIC PROFILE'}>
+            <PropertyEditor.Property
+              label={'First Name'}
+              control={<TextInput value={'John'} />}
+            />
+            <PropertyEditor.Property
+              label={'Last Name'}
+              control={<TextInput value={'Smith'} />}
+            />
+          </PropertyEditor.Group>
+          <PropertyEditor.Group title={'PRIVATE DETAILS'}>
+            <PropertyEditor.Property
+              label={'E-mail Address'}
+              control={<TextInput value={'w2@gmail.com'} />}
+            />
+            <PropertyEditor.Property
+              label={'Phone Number'}
+              control={<TextInput placeholder={'You phone number'} />}
+            />
+          </PropertyEditor.Group>
+        </PropertyEditor>
       </View>
     </View>
   );
