@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
 
+import {assets} from '../../assets/assets';
+
 export default StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
   },
   content: {
     flex: 1,
@@ -16,7 +17,6 @@ export default StyleSheet.create({
   userName: {
     textAlign: 'center',
     fontSize: 18,
-    color: 'black',
     marginTop: 24,
   },
   navigationContainer: {

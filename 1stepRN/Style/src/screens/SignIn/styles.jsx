@@ -17,7 +17,6 @@ export default StyleSheet.create({
     textAlign: 'center',
     paddingTop: 8,
     paddingBottom: 10,
-    color: 'black',
   },
   addNavText: {
     color: 'blue',

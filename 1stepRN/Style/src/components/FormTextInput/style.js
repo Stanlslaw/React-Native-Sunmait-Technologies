@@ -5,14 +5,12 @@ export default StyleSheet.create({
   label: {
     paddingTop: 4,
     fontSize: 16,
-    color: 'black',
   },
   inputContainer: {
     fontSize: 16,
     marginHorizontal: 12,
     borderBottomColor: 'black',
     borderBottomWidth: 1,
-    color: 'black',
   },
   errors: {
     paddingTop: 4,

@@ -1,5 +1,6 @@
+import {useTheme} from '@react-navigation/native';
 import React, {useRef} from 'react';
-import {Text, TextInput, View} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 
 import styles from './style';
 export default function FormTextInput({
@@ -15,9 +16,14 @@ export default function FormTextInput({
   touched,
   refer,
 }) {
+  const {colors} = useTheme();
   return (
     <View style={styles.container}>
-      {label && <Text style={styles.label}>{label}</Text>}
+      {label && (
+        <Text style={StyleSheet.compose(styles.label, {color: colors.text})}>
+          {label}
+        </Text>
+      )}
       <TextInput
         ref={refer}
         name={name}
@@ -27,7 +33,10 @@ export default function FormTextInput({
         onBlur={handleBlur(name)}
         blurOnSubmit={false}
         onSubmitEditing={handleSubmitEditing}
-        style={styles.inputContainer}
+        style={StyleSheet.compose(styles.inputContainer, {
+          color: colors.text,
+          borderBottomColor: colors.text,
+        })}
         keyboardType={keyboardType}
         placeholderTextColor={'grey'}
       />

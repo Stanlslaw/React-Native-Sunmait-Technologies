@@ -1,3 +1,4 @@
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {
   Alert,
@@ -15,6 +16,7 @@ import {changeUserAuthStatus} from '../../features/auth/authSlice';
 import styles from './styles';
 export default function ProfileScreen({navigation}) {
   const dispatch = useDispatch();
+  const {colors} = useTheme();
   const handleLogout = () => {
     Alert.alert('Are you sure to logout?', '', [
       {
@@ -33,7 +35,10 @@ export default function ProfileScreen({navigation}) {
       <View style={styles.content}>
         <View>
           <ImagePicker />
-          <Text style={styles.userName}>Jonh Smith</Text>
+          <Text
+            style={StyleSheet.compose(styles.userName, {color: colors.text})}>
+            Jonh Smith
+          </Text>
         </View>
         <View style={styles.navigationContainer}>
           <ProfileNavButton

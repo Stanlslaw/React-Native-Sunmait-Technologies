@@ -34,21 +34,29 @@ export default function AccountDetailsScreen({navigation}) {
           <PropertyEditor.Group title={'PUBLIC PROFILE'}>
             <PropertyEditor.Property
               label={'First Name'}
-              control={<TextInput value={'John'} />}
+              control={<TextInput value={'John'} style={{color: 'black'}} />}
             />
             <PropertyEditor.Property
               label={'Last Name'}
-              control={<TextInput value={'Smith'} />}
+              control={<TextInput value={'Smith'} style={{color: 'black'}} />}
             />
           </PropertyEditor.Group>
           <PropertyEditor.Group title={'PRIVATE DETAILS'}>
             <PropertyEditor.Property
               label={'E-mail Address'}
-              control={<TextInput value={'w2@gmail.com'} />}
+              control={
+                <TextInput value={'w2@gmail.com'} style={{color: 'black'}} />
+              }
             />
             <PropertyEditor.Property
               label={'Phone Number'}
-              control={<TextInput placeholder={'You phone number'} />}
+              control={
+                <TextInput
+                  placeholder={'You phone number'}
+                  placeholderTextColor={'grey'}
+                  style={{color: 'black'}}
+                />
+              }
             />
           </PropertyEditor.Group>
         </PropertyEditor>

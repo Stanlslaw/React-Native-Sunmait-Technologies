@@ -1,5 +1,12 @@
+import {useTheme} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import styles from './style';
@@ -15,9 +22,12 @@ export default function FormPasswordTextInput({
   refer,
 }) {
   const [isShow, setIsShow] = useState(false);
+  const {colors} = useTheme();
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={StyleSheet.compose(styles.label, {color: colors.text})}>
+        {label}
+      </Text>
       <View>
         <TextInput
           ref={refer}
@@ -27,7 +37,10 @@ export default function FormPasswordTextInput({
           onChangeText={handleChange(name)}
           onBlur={handleBlur(name)}
           secureTextEntry={!isShow}
-          style={styles.inputContainer}
+          style={StyleSheet.compose(styles.inputContainer, {
+            color: colors.text,
+            borderBottomColor: colors.text,
+          })}
           placeholderTextColor={'grey'}
         />
         <TouchableOpacity
@@ -36,7 +49,7 @@ export default function FormPasswordTextInput({
           <Ionicons
             name={isShow ? 'eye-outline' : 'eye-off-outline'}
             size={24}
-            color={'black'}
+            color={colors.text}
           />
         </TouchableOpacity>
       </View>

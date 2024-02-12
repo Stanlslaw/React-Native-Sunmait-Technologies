@@ -1,6 +1,7 @@
+import {useTheme} from '@react-navigation/native';
 import {Formik} from 'formik';
 import React, {useRef} from 'react';
-import {Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import * as Yup from 'yup';
 
@@ -17,6 +18,7 @@ const signInValidationSchema = Yup.object().shape({
 
 export default function SignInScreen({navigation}) {
   const dispatch = useDispatch();
+  const {colors} = useTheme();
   const handleSignIn = () => {
     dispatch(changeUserAuthStatus());
   };
@@ -71,7 +73,7 @@ export default function SignInScreen({navigation}) {
                 <Text style={styles.addText}>
                   Don't have an account?{' '}
                   <Text
-                    style={styles.addNavText}
+                    style={StyleSheet.compose(styles.addNavText, colors.text)}
                     onPress={() => {
                       navigation.navigate('sign-up');
                     }}>

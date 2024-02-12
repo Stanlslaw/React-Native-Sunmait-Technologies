@@ -12,7 +12,6 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: 'black',
     fontSize: 18,
     paddingLeft: 12,
   },
