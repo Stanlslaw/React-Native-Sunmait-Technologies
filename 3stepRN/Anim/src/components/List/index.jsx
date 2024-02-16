@@ -1,9 +1,18 @@
 import React from 'react';
 import {FlatList, Text, View} from 'react-native';
 
-export default function List({data}) {
+import ListItem from '../ListItem';
+
+export default function List({data, navigation}) {
   const renderItem = ({item}) => {
-    return <Text>{item.id}</Text>;
+    return (
+      <ListItem
+        item={item}
+        onPress={data => {
+          navigation.navigate('item', data);
+        }}
+      />
+    );
   };
   return (
     <View>

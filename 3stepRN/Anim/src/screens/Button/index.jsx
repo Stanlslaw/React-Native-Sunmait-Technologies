@@ -9,6 +9,7 @@ export default function ButtonScreen() {
     border: 'magenta',
   });
   const [borderStyle, setBorderStyle] = useState('dashed');
+  const [textOpacity, setTextOpacity] = useState(1);
   const rotateButton = () => {
     anim.setValue(0); // Reset the anim value before starting a new animation
     setColor({
@@ -16,23 +17,25 @@ export default function ButtonScreen() {
       back: color.back === 'white' ? 'blue' : 'white',
       border: color.border === 'magenta' ? 'blue' : 'magenta',
     });
+    setTextOpacity(0);
     setBorderStyle(borderStyle === 'dashed' ? 'solid' : 'dashed');
     Animated.timing(anim, {
-      toValue: 1,
-      duration: 100,
+      toValue: 100,
+      duration: 200,
       useNativeDriver: true,
     }).start(() => {
       anim.setValue(0); // Reset the anim value after the animation completes
+      setTextOpacity(1);
     });
   };
 
   const interpolatedRotate = anim.interpolate({
-    inputRange: [0, 1],
+    inputRange: [0, 100],
     outputRange: ['360deg', '180deg'],
   });
 
   const interpolatedOpacity = anim.interpolate({
-    inputRange: [0, 1],
+    inputRange: [0, 100],
     outputRange: ['0', '1'],
   });
 
@@ -55,6 +58,7 @@ export default function ButtonScreen() {
             styles.buttonText,
             {
               color: color.text,
+              opacity: textOpacity,
             },
           ]}>
           Click Me
