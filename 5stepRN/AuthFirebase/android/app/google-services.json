@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "802568292873",
+    "project_id": "sunmait-react-native",
+    "storage_bucket": "sunmait-react-native.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802568292873:android:04fbc49d0ca5f4d53706d8",
+        "android_client_info": {
+          "package_name": "com.authfirebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyR1DQtJr6zgF_gGebuede3MS9tas6ies"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
