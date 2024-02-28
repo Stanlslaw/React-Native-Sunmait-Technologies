@@ -1,3 +1,4 @@
+import auth from '@react-native-firebase/auth';
 import React, {useState} from 'react';
 import {
   Image,
@@ -12,10 +13,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import userImage from '../../assets/images/avatar-design.png';
 import styles from './styles';
 
-export default function ImagePicker() {
+export default function ImagePicker({name, onPhotoChanged}) {
   const windowWidth = useWindowDimensions().width;
 
-  const [imageUri, setImageUri] = useState(undefined);
+  const [imageUri, setImageUri] = useState(auth().currentUser.photoURL || '');
 
   const handleGallery = async () => {
     await launchImageLibrary({mediaType: 'photo'}, response => {
@@ -24,6 +25,7 @@ export default function ImagePicker() {
       } else if (response.errorMessage) {
         console.log('ImagePicker Error: ', response.errorMessage);
       } else {
+        onPhotoChanged(name, response.assets[0].uri);
         setImageUri(response.assets[0].uri);
       }
     });
@@ -35,6 +37,7 @@ export default function ImagePicker() {
       } else if (response.errorMessage) {
         console.log('ImagePicker Error: ', response.errorMessage);
       } else {
+        onPhotoChanged(name, response.assets[0].uri);
         setImageUri(response.assets[0].uri);
       }
     });

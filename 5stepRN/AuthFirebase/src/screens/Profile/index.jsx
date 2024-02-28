@@ -34,14 +34,18 @@ export default function ProfileScreen({navigation}) {
       },
     ]);
   };
+  const handleUserPhoto = async (name, url) => {
+    await auth().currentUser.updateProfile({photoURL: url});
+    console.log(JSON.stringify(auth().currentUser));
+  };
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <View>
-          <ImagePicker />
+          <ImagePicker onPhotoChanged={handleUserPhoto} />
           <Text
             style={StyleSheet.compose(styles.userName, {color: colors.text})}>
-            Jonh Smith
+            {auth().currentUser.displayName}
           </Text>
         </View>
         <View style={styles.navigationContainer}>

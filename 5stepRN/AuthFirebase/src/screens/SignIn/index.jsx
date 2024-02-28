@@ -18,6 +18,7 @@ import FormButton from '../../components/FormButton/index';
 import FormPasswordTextInput from '../../components/FormPasswordTextInput';
 import FormTextInput from '../../components/FormTextInput';
 import {mmkvStore} from '../../mmkv/store';
+import {Auth} from '../../utils/auth.service';
 import styles from './styles';
 
 const signInValidationSchema = Yup.object().shape({
@@ -28,65 +29,15 @@ const signInValidationSchema = Yup.object().shape({
 export default function SignInScreen({navigation}) {
   const {colors} = useTheme();
   const [signInError, setSignInError] = useState('');
-  const handleSignIn = values => {
-    auth()
-      .signInWithEmailAndPassword(values.email, values.password)
-      .then(res => {
-        console.log('sign-in');
-      })
-      .catch(err => {
-        if (err.code === 'auth/invalid-credential') {
-          console.log('Incorrect password or login');
-          Alert.alert('Login error', 'Incorrect password or login, try again');
-        } else {
-          console.log(err.message);
-        }
-      });
+  const handleSignIn = async values => {
+    await Auth.SignIn(values.email, values.password);
   };
   const passwordRef = useRef();
   const handleNextField = ref => {
     ref.current.focus();
   };
   const handleBiometricSignIn = async values => {
-    const hasBiometic = mmkvStore.getBoolean('biometric.isActive');
-    console.log(hasBiometic, mmkvStore.getAllKeys());
-    if (hasBiometic) {
-      const biometrics = new ReactNativeBiometrics({
-        allowDeviceCredentials: true,
-      });
-      const {available, biometryType} = await biometrics.isSensorAvailable();
-      if (available && biometryType === 'Biometrics') {
-        const {success} = await biometrics.simplePrompt({
-          promptMessage: 'Confirm you biometric',
-        });
-        if (success) {
-          const email = mmkvStore.getString('user.email');
-          const password = mmkvStore.getString('user.password');
-          console.log(email, password);
-          auth()
-            .signInWithEmailAndPassword(email, password)
-            .then(res => {
-              console.log('sign-in');
-            })
-            .catch(err => {
-              if (err.code === 'auth/invalid-credential') {
-                console.log('Incorrect password or login');
-                Alert.alert(
-                  'Login error',
-                  'Incorrect password or login, try again',
-                );
-              } else {
-                console.log(err.message);
-              }
-            });
-        }
-      }
-    } else {
-      Alert.alert(
-        'Biometric',
-        "You don't have saved biometric, use another authentication method",
-      );
-    }
+    await Auth.SignInWithBiometric();
   };
   return (
     <View style={styles.container}>

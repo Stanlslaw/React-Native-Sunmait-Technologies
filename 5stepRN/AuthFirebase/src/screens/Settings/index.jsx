@@ -2,22 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {Appearance, StyleSheet, Switch, Text, View} from 'react-native';
 
 import PropertyEditor from '../../components/PropertyEditor';
+import useBiometricState from '../../hooks/useBiometricState';
 import {mmkvStore} from '../../mmkv/store';
 import styles from './styles';
 export default function SettingsScreen({navigation}) {
   const [themeType, setThemeType] = useState(
     Appearance.getColorScheme() === 'dark' ? true : false,
   );
-  const [isBiometric, setIsBiometric] = useState(
-    mmkvStore.getBoolean('biometric.isActive'),
-  );
-  const handleBiometric = () => {
-    if (mmkvStore.getBoolean('biometric.isActive')) {
-      mmkvStore.set('biometric.isActive', false);
-    } else {
-      mmkvStore.set('biometric.isActive', true);
-    }
-  };
+  const [isBiometric, handleBiometric] = useBiometricState();
+
   useEffect(() => {
     Appearance.setColorScheme(themeType ? 'dark' : 'light');
   }, [themeType]);
@@ -36,8 +29,7 @@ export default function SettingsScreen({navigation}) {
                 <Switch
                   value={isBiometric}
                   onValueChange={val => {
-                    handleBiometric();
-                    setIsBiometric(val);
+                    handleBiometric(val);
                   }}
                 />
               }

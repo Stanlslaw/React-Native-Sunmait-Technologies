@@ -22,6 +22,7 @@ import FormPasswordTextInput from '../../components/FormPasswordTextInput';
 import FormTextInput from '../../components/FormTextInput';
 import ImagePicker from '../../components/ImagePicker';
 import {mmkvStore} from '../../mmkv/store';
+import {Auth} from '../../utils/auth.service';
 import styles from './styles';
 
 const signInValidationSchema = Yup.object().shape({
@@ -61,53 +62,13 @@ export default function SignUpScreen({navigation}) {
     ref.current.focus();
   };
   const handleSignUp = async values => {
-    Alert.alert('Biometric', 'Do you want to save you profile by fingerprint', [
-      {
-        text: 'Yes',
-        onPress: async () => {
-          const biometrics = new ReactNativeBiometrics({
-            allowDeviceCredentials: true,
-          });
-          const {available, biometryType} =
-            await biometrics.isSensorAvailable();
-          if (available && biometryType === 'Biometrics') {
-            const {success} = await biometrics.simplePrompt({
-              promptMessage: 'Confirm you biometric',
-            });
-            if (success) {
-              mmkvStore.set('biometric.isActive', true);
-              mmkvStore.set('user.email', values.email);
-              mmkvStore.set('user.password', values.password);
-              console.log('biometric is saved');
-              auth()
-                .createUserWithEmailAndPassword(values.email, values.password)
-                .then(res => {
-                  res.user.phoneNumber = values.phoneNumber;
-                  res.user.displayName =
-                    values.firstName + ' ' + values.lastName;
-                  console.log('User account created & signed in!');
-                })
-                .catch(error => {
-                  if (error.code === 'auth/email-already-in-use') {
-                    console.log('That email address is already in use!');
-                  }
-
-                  if (error.code === 'auth/invalid-email') {
-                    console.log('That email address is invalid!');
-                  }
-
-                  console.error(error);
-                });
-            }
-          } else {
-            console.log('biometric is not allowed');
-          }
-        },
-      },
-      {
-        text: 'No',
-      },
-    ]);
+    await Auth.SignUp(
+      values.email,
+      values.password,
+      values.phoneNumber,
+      values.firstName + ' ' + values.lastName,
+      values.photoUrl,
+    );
   };
   const openPolicyModal = () => {
     console.log('hi');
@@ -126,9 +87,10 @@ export default function SignUpScreen({navigation}) {
               phoneNumber: '',
               password: '',
               policy: false,
+              photoUrl: '',
             }}
-            onSubmit={values => {
-              handleSignUp(values);
+            onSubmit={async values => {
+              await handleSignUp(values);
             }}>
             {({
               handleChange,
@@ -141,7 +103,7 @@ export default function SignUpScreen({navigation}) {
               touched,
             }) => (
               <View>
-                <ImagePicker />
+                <ImagePicker onPhotoChanged={setFieldValue} name={'photoUrl'} />
                 <FormTextInput
                   value={values.firstName}
                   name={'firstName'}
