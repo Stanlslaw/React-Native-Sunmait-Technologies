@@ -1,5 +1,7 @@
+import messaging from '@react-native-firebase/messaging';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from '../screens/Home';

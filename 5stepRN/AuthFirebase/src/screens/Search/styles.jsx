@@ -8,6 +8,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
   },
+  inputContainer: {
+    fontSize: 16,
+    marginHorizontal: 12,
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+  },
   center: {
     alignItems: 'center',
     justifyContent: 'center',
